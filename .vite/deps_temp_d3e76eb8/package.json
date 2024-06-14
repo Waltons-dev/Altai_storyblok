@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@vitejs/plugin-basic-ssl": "^1.1.0"
+  }
+}
