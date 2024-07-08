@@ -24,6 +24,7 @@ defineProps({ blok: Object })
 }
 .calendar__btn_booked{
   background-color: #111827;
+  cursor: default;
 }
 
 .article__tag{

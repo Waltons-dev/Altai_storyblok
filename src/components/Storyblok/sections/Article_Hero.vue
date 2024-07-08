@@ -7,7 +7,7 @@ import {StoryblokComponent} from "@storyblok/vue";
 
 </script>
 <template>
-  <div class="article__hero_container">
+  <div class="article__hero">
     <StoryblokComponent class="article__headline" v-editable="blok" v-for="inblok in blok.Headline" :key="inblok._uid" :blok="inblok" />
     <div class="article__hero-main">
       <StoryblokComponent v-editable="blok" v-for="inblok in blok.columns" :key="inblok._uid" :blok="inblok" />
@@ -17,6 +17,9 @@ import {StoryblokComponent} from "@storyblok/vue";
 
 </template>
 <style scoped lang="scss">
+.article__hero{
+  margin-bottom: 80px;
+}
 .article__hero-main{
   display: flex;
   justify-content: space-between;

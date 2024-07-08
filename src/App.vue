@@ -18,10 +18,9 @@ useHead({
 <template>
   <Suspense>
     <template #default>
-      <div class="article_Page _container">
+      <div class="article__page">
         <Home />
         <Calendar></Calendar>
-
       </div>
     </template>
 
@@ -45,12 +44,12 @@ useHead({
 
 @font-face {
   font-family: 'Formular';
-  src: url('fonts/Formular-Italic.eot');
-  src: local('Formular Italic'), local('Formular-Italic'),
-  url('fonts/Formular-Italic.eot?#iefix') format('embedded-opentype'),
-  url('fonts/Formular-Italic.woff2') format('woff2'),
-  url('fonts/Formular-Italic.woff') format('woff'),
-  url('fonts/Formular-Italic.ttf') format('truetype');
+  src: url('fonts/Formular-LightItalic.eot');
+  src: local('Formular LightItalic'), local('Formular-LightItalic'),
+  url('fonts/Formular-LightItalic.eot?#iefix') format('embedded-opentype'),
+  url('fonts/Formular-LightItalic.woff2') format('woff2'),
+  url('fonts/Formular-LightItalic.woff') format('woff'),
+  url('fonts/Formular-LightItalic.ttf') format('truetype');
   font-weight: normal;
   font-style: italic;
 }

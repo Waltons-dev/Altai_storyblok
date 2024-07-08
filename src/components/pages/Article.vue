@@ -12,7 +12,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <StoryblokComponent v-if="state.story" :blok="state.story.content"/>
+  <StoryblokComponent class="article__page_container _container" v-if="state.story" :blok="state.story.content"/>
 </template>
 
 
