@@ -15,12 +15,13 @@ defineProps({ blok: Object })
 <style lang="scss">
 .calendar__btn{
   cursor: pointer;
-  max-width: 95px;
   height: 60px;
   background-color: #EF4444;
   border: 3px solid #EF4444;
   border-radius: 12px;
   color: #F9FAFB;
+  font-weight: 500;
+  font-size: 20px;
 }
 .calendar__btn_booked{
   background-color: #111827;
