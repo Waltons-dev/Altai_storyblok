@@ -6,13 +6,13 @@ import {StoryblokComponent} from "@storyblok/vue";
 </script>
 
 <template>
-  <div v-editable="blok">
+  <main v-editable="blok">
     <StoryblokComponent
         v-for="inblok in blok.body"
         :blok="inblok"
         :key="inblok._uid"
     />
-  </div>
+  </main>
 </template>
 <style scoped lang="css">
 

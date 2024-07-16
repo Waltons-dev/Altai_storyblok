@@ -112,8 +112,12 @@ useHead({
   border: 0;
   box-sizing: border-box;
   font-family:  "Formular",sans-serif;
-  font-weight: 500;
+  font-weight: normal;
 }
-
+br{
+  content: "";
+  display: block;
+  margin-bottom: 13px;
+}
 
 </style>

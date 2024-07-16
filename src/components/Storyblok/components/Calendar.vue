@@ -113,7 +113,7 @@ const weekdays = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
 </script>
 
 <template>
-  <div class="calendar">
+  <div class="calendar _container">
     <div class="calendar__container">
       <nav class="calendar__nav">
         <span class="nav__date">{{text_month}}, {{year}}</span>
