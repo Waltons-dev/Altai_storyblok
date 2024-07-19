@@ -22,7 +22,7 @@ export default {
   </article>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .article__body{
   margin-bottom: 80px;
   padding-bottom: 40px;
