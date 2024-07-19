@@ -4,22 +4,44 @@ import {StoryblokComponent} from "@storyblok/vue";
 const props = defineProps({ blok: Object })
 </script>
 
+
 <template>
-  <div>
-    <div class="article__text-image">
+    <div>
       <div class="article__body-element-text">
-        <StoryblokComponent class="article__text-heading" v-editable="blok" v-for="inblok in blok.columns.slice(0,1)" :key="inblok._uid" :blok="inblok" />
-        <StoryblokComponent class="article__body-text" v-editable="blok" v-for="inblok in blok.columns.slice(1)" :key="inblok._uid" :blok="inblok" />
+        <template v-for="inblok in blok.columns">
+          <StoryblokComponent class="article__body-text" v-if="inblok.component==='Textarea'" :blok="inblok" />
+          <StoryblokComponent class="article__text-Soyuz-heading" v-if="inblok.component==='Article_body_heading'" :blok="inblok" />
+        </template>
       </div>
       <img loading="lazy" class="article__body-text-image" :src=blok.img :alt=blok.alternative_text>
     </div>
-  </div>
 </template>
 
 <style lang="scss">
-.article__text-image{
+.article__left-text-image{
   display: flex;
   align-items: center;
+  gap: 10%;
+}
+.article__right-text-image{
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 10%;
+  .article__body-element-text{
+    width: 45%;
+  }
+}
+.article__top-text-image{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10%;
+}
+.article__bottom-text-image{
+  display: flex;
+  align-items: center;
+  flex-direction: column-reverse;
   gap: 10%;
 }
 
