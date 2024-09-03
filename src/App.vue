@@ -2,6 +2,9 @@
 import {useHead} from "@unhead/vue";
 import Home from "./components/pages/Article.vue"
 import Calendar from "./components/Storyblok/components/Calendar.vue";
+import Header from "./components/Storyblok/sections/Header.vue";
+import Hero from "./components/Storyblok/sections/Hero.vue";
+import Footer from "./components/Storyblok/sections/Footer.vue";
 
 useHead({
   "link": [
@@ -19,8 +22,11 @@ useHead({
   <Suspense>
     <template #default>
       <div class="article__page">
-        <Home />
-        <Calendar></Calendar>
+<!--        <Home />-->
+        <Header></Header>
+        <Hero></Hero>
+        <Footer></Footer>
+<!--        <Calendar></Calendar>-->
       </div>
     </template>
 
@@ -106,8 +112,10 @@ useHead({
 ._container{
   max-width: 1448px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
+
 * {
   border: 0;
   box-sizing: border-box;
