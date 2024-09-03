@@ -2,34 +2,81 @@
 import Button from "../partials/Button.vue"
 
 const weekdays = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
-</script>
 
+// надо бы поставить timeout на появление book_zone чтобы уменьшение ширины типа плавно было
+
+</script>
 <script>
   import {ref} from "vue";
-
   let now = new Date();
   const months = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
   const dayInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   let year = ref(now.getFullYear());
   let num_month = now.getMonth();
   let text_month = ref(months[num_month]);
-  //получаем на вход день в виде ДД.ММ.ГГ
+  //получаем на вход день в виде ДД.ММ.ГГГГ
   let bookedHousesDates = [
-    {date: '04.10.23', time: '00:30'},
-    {date: '11.02.25', time: '12:30'},
-    {date: '30.06.24', time: '22:30'},
-    {date: '05.06.24', time: '22:30'},
+    {date: '04.10.2023', time: '00:30'},
+    {date: '11.02.2025', time: '12:30'},
+    {date: '30.07.2024', time: '22:30'},
+    {date: '05.07.2024', time: '22:30'},
   ]
-  //меняем местами день и месяц в полученном списке для взаимодействия с Date()
-  for(let i of bookedHousesDates){
-    i.date = i.date.slice(3,6)+i.date.slice(0,3)+i.date.slice(6,10);
-  }
+  let FreeRaftingDays = [
+    {date: '04.10.2024', time: '04:30'},
+    {date: '11.02.2025', time: '12:30'},
+    {date: '30.07.2024', time: '22:30'},
+    {date: '05.07.2024', time: '09:00'},
+    {date: '05.07.2024', time: '14:00'},
+    {date: '05.07.2024', time: '18:30'},
+    {date: '05.07.2024', time: '17:30'},
+    {date: '05.07.2024', time: '08:30'},
+    {date: '05.07.2024', time: '20:30'},
+    {date: '05.07.2024', time: '18:30'},
+    {date: '05.07.2024', time: '18:30'},
+    {date: '05.09.2024', time: '18:30'},
+    {date: '05.07.2024', time: '18:30'},
+    {date: '05.07.2024', time: '18:30'},
+    {date: '05.07.2024', time: '17:00'},
+    {date: '05.07.2024', time: '17:30'},
+    {date: '05.07.2024', time: '19:00'},
+    {date: '05.07.2024', time: '05:00'},
+    {date: '05.07.2024', time: '16:00'},
+    {date: '05.07.2024', time: '08:00'},
+  ]
+  let FreeFishingDays = [
+    {date: '05.10.2024', time: '04:30'},
+    {date: '01.02.2025', time: '12:30'},
+    {date: '16.07.2024', time: '22:30'},
+    {date: '15.07.2024', time: '09:00'},
+    {date: '15.07.2024', time: '14:00'},
+    {date: '15.07.2024', time: '18:30'},
+    {date: '15.07.2024', time: '17:30'},
+    {date: '15.07.2024', time: '08:30'},
+    {date: '15.07.2024', time: '20:30'},
+    {date: '15.07.2024', time: '18:30'},
+    {date: '15.07.2024', time: '18:30'},
+    {date: '15.09.2024', time: '18:30'},
+    {date: '15.07.2024', time: '18:30'},
+    {date: '15.07.2024', time: '18:30'},
+    {date: '15.07.2024', time: '17:00'},
+    {date: '15.07.2024', time: '17:30'},
+    {date: '15.07.2024', time: '19:00'},
+    {date: '15.07.2024', time: '05:00'},
+    {date: '15.07.2024', time: '16:00'},
+    {date: '15.07.2024', time: '08:00'},
+  ]
 
+
+  // bookedHousesDates = bookedHousesDates.map(JSON.stringify).filter((e,i,a) => i === a.indexOf(e)).map(JSON.parse)
+  // bookedHousesDates.sort((a, b) => a.time > b.time ? 1 : -1);
 
   export default {
     mounted() {
       function Calendar(date) {
+        //создаем тело календаря
         const calendarBody = document.querySelector('.calendar__body');
+        const calendarCont = document.querySelector('.calendar__container');
+        const calendar = document.querySelector('.calendar');
         date.setDate(1);
         let startDay = date.getDay();
         const daysTotal = !(date.getFullYear() % 4) && date.getMonth() === 1 ? 29 : dayInMonth[date.getMonth()];
@@ -39,35 +86,110 @@ const weekdays = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
           content += '<div class="space"></div>';
         }
         for(let i = 1; i <= daysTotal; i++) {
-          if(i<10)
-            content += '<Button class="calendar__btn _btn-reset">' + '0'+i + '</Button>';
-          else
-            content += '<Button class="calendar__btn _btn-reset">' + i + '</Button>';
+          if(i<10){
+            content += '<Button class="calendar__btn">' + '0'+i + '</Button>';
+          }
+          else{
+            content += '<Button class="calendar__btn">' + i + '</Button>';
+          }
         }
         calendarBody.innerHTML = content;
 
+
         const btns = document.querySelectorAll(".calendar__btn");
+        //убираем класс у всех неактивных кнопок
         const removeAllActive = () => {
           return btns.forEach(item => item.classList.remove('calendar__btn_active'));
         };
 
-        //проверка на бронированный день
-        for(let btn of btns){
-          btn.onclick = function (){
-            btn.classList.toggle("calendar__btn_active");
-            removeAllActive();
-          }
-          for(let i of bookedHousesDates){
-            let booked = new Date(i.date)
-            if((btn.textContent===booked.getDate().toString() || btn.textContent === '0'+booked.getDate().toString())
-                && num_month === booked.getMonth()
-                && year.value === booked.getFullYear())
-            {
-              btn.classList.add("calendar__btn_booked");
-            }
-          }
+        //бронирование для домов
+        const houseBooking = function (FreeDays){
 
         }
+
+        //бронирование для экскурсий
+        const ToursBooking=function(tour){
+          //удаление дубликатов и сортировка по времени
+          tour = tour.map(JSON.stringify).filter((e,i,a) => i === a.indexOf(e)).map(JSON.parse)
+          tour.sort((a, b) => a.time > b.time ? 1 : -1);
+
+          let PrevButt = '0';
+          //бронирование
+          for(let btn of btns){
+            btn.onclick = function (){
+              //скрытие зоны бронирования и переход к первоначальному виду
+              if (PrevButt===btn.textContent && calendarCont.classList.contains("calendar__container_active")){
+                removeAllActive();
+                calendar.lastChild.remove()
+                calendar.style.display="block"
+                calendarCont.classList.remove("calendar__container_active")
+              }
+              //добавление зоны бронирования
+              else {
+                removeAllActive();
+                btn.classList.add("calendar__btn_active")
+                calendarCont.classList.add("calendar__container_active")
+                if(calendar.childElementCount>=2){
+                  calendar.lastChild.remove()
+                }
+                calendar.insertAdjacentHTML("beforeend", "<div class='calendar__booking-zone'><h4 class='booking-zone__heading'>Выберите время:</h4><strong class='booking-zone__heading-date'>"+[btn.textContent, num_month>=9 ? num_month+1:'0'+(num_month+1), year.value].join('.')+"</strong></div>")
+                const bookingZone = document.body.querySelector(".calendar__booking-zone")
+                calendar.style.display = "flex"
+                bookingZone.insertAdjacentHTML("beforeend","<div class='booking-zone__buttons'></div>")
+
+                createBookZone(bookingZone, tour, [btn.textContent, num_month>=9 ? num_month+1:'0'+(num_month+1), year.value].join('.'))
+                createBookZone(bookingZone, tour, [btn.textContent, num_month>=9 ? num_month+1:'0'+(num_month+1), year.value].join('.'))
+
+                bookingZone.insertAdjacentHTML("beforeend","<Button class='booking-zone__continue-button' disabled>Продолжить</Button>")
+                const continueButton=document.querySelector(".booking-zone__continue-button")
+
+                let BookedTime=''
+                const bookBtns = document.querySelectorAll(".booking-zone__time");
+                const removeAllBookActive = () => {
+                  return bookBtns.forEach(item => item.classList.remove('calendar__btn_active'));
+                };
+                for (let bookButton of bookBtns){
+                  bookButton.onclick = function (){
+                    removeAllBookActive();
+                    bookButton.classList.add("calendar__btn_active")
+                    BookedTime=bookButton.textContent
+                    continueButton.removeAttribute('disabled')
+                    continueButton.style.cursor='pointer'
+                  }
+                }
+                continueButton.onclick=function (){
+                  console.log(BookedTime)
+                  // calendar.classList.add("")
+
+                }
+              }
+              PrevButt = btn.textContent
+            }
+
+            let TourOnlyDays=new Set()
+            let flag=0;
+            for(let key in tour)
+              TourOnlyDays.add(tour[key].date)
+            for (let i of TourOnlyDays){
+              if([btn.textContent,num_month>=9 ? (num_month+1):'0'+(num_month+1), year.value].join('.')===i)
+                flag=1
+            }
+            if (flag===0){
+              btn.classList.add("calendar__btn_booked")
+              btn.disabled=true
+            }
+
+          }
+          const createBookZone = function (zone,bookDates,date){
+            for (let i of bookDates) {
+              if(i.date===date){
+                zone.lastChild.insertAdjacentHTML("beforeend","<Button class='booking-zone__time'>"+i.time+"</Button>")
+              }
+            }
+          }
+        }
+
+        ToursBooking(FreeRaftingDays)
       }
       Calendar(new Date(year.value,num_month));
 
@@ -106,8 +228,6 @@ const weekdays = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
           num_month+=1;
         text_month.value = months.at(num_month);
       }
-
-
     },
   };
 </script>
@@ -116,7 +236,6 @@ const weekdays = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
   <div class="calendar _container">
     <div class="calendar__container">
       <nav class="calendar__nav">
-        <span class="nav__date">{{text_month}}, {{year}}</span>
         <div class="nav__buttons">
           <button class="nav__button nav__button_l">
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -129,39 +248,35 @@ const weekdays = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
             </svg>
           </button>
         </div>
+        <span class="nav__date">{{text_month}}, {{year}}</span>
       </nav>
 
       <div class="calendar__head">
         <span class="calendar__weekdays" v-for="weekday in weekdays">{{weekday}}</span>
       </div>
       <div class="calendar__body">
-
       </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-._btn-reset {
-  border: none;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-  background: transparent;
-  cursor: pointer;
-  user-select: none;
-  -webkit-touch-callout: none;
-}
-
+<style lang="scss">
 .calendar{
   background-color: #111827;
   border-radius: 16px;
 }
 .calendar__container {
-  padding: 44px;
+  padding: 46px;
+  width: 100%;
 }
+//календарь при бронировании
+.calendar__container_active{
+  width: 75%;
+}
+
 .calendar__nav{
-  display: flex;
-  gap: 8px;
+  display: inline-flex;
+  gap: 10px;
   margin-bottom: 32px;
 }
 .nav__date{
@@ -183,22 +298,58 @@ const weekdays = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"];
 .calendar__head{
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  column-gap: 115px;
+  column-gap: 8.5%;
 }
 .calendar__body{
   display: grid;
   grid-template-rows: repeat(5, 1fr);
   grid-template-columns: repeat(7, 1fr);
-  column-gap: 115px;
+  column-gap: 8.5%;
   row-gap: 12px;
 }
-.calendar__weekdays{
+.calendar__weekdays, .booking-zone__heading-date{
   color: #F9FAFB;
   font-size: 20px;
   line-height: 28px;
   text-align: center;
   margin-bottom: 28px;
+  font-weight: 500;
 }
 
+.calendar__booking-zone{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 44px;
+  width: 23%;
+}
+.booking-zone__buttons{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  max-height: 288px;
+  overflow: auto;
+  margin-bottom: 8px;
+  padding-right: 12px;
 
+}
+.booking-zone__buttons::-webkit-scrollbar {
+  width: 8px;
+  background-color:#F9FAFB ;
+  border-radius: 6px;
+}
+.booking-zone__buttons::-webkit-scrollbar-thumb {
+  background-color: #EF4444AB;
+  border-radius: 6px;
+}
+.booking-zone__heading{
+  color: #F9FAFB;
+  font-size: 24px;
+  font-weight: normal;
+  margin: 0 0 32px 0;
+}
+
+.booking-zone__heading-date{
+  margin: 0 0 28px 0;
+}
 </style>
